@@ -1,0 +1,47 @@
+
+practice 1
+
+select * from Employee where salary>6000 and name like '%n%';
++----+------------+-----+----------+-----------+--------+
+| id | name       | age | gender   | companyId | salary |
++----+------------+-----+----------+-----------+--------+
+|  1 | 'xiaohong' | 19  | 'female' |         1 |   7000 |
++----+------------+-----+----------+-----------+--------+
+
+practice 2
+
+select c.companyName,e.name from Company c, (select name,companyId,max(salary) from 
+Employee group by companyId) e where c.id = e.companyId;
++-------------+------------+
+| companyName | name       |
++-------------+------------+
+| 'baidu'     | 'xiaoming' |
+| 'alibaba'   | 'xiaohong' |
+| 'tengxun'   | 'xiaozhi'  |
++-------------+------------+
+
+
+practice 3
+
+select c.companyName,a.avgSalary from Company c, (select companyId,avg(salary) as 
+avgSalary from Employee group by companyId) a where c.id = a.companyId;
+
++-------------+-----------+
+| companyName | avgSalary |
++-------------+-----------+
+| 'baidu'     | 5000.0000 |
+| 'alibaba'   | 6500.0000 |
+| 'tengxun'   | 8000.0000 |
++-------------+-----------+
+
+practice 4
+
+select e.id,e.name,e.gender,e.companyId,e.salary,c.companyName,a.avgSalary from 
+Employee e,Company c, (select companyId,avg(salary) as avgSalary from Employee group by companyId) a 
+where e.companyId = c.id and e.companyId = a.companyId and e.salary > a.avgSalary;
++----+------------+----------+-----------+--------+-------------+-----------+
+| id | name       | gender   | companyId | salary | companyName | avgSalary |
++----+------------+----------+-----------+--------+-------------+-----------+
+|  0 | 'xiaoming' | 'male'   |         0 |   6000 | 'baidu'     | 5000.0000 |
+|  1 | 'xiaohong' | 'female' |         1 |   7000 | 'alibaba'   | 6500.0000 |
++----+------------+----------+-----------+--------+-------------+-----------+
